@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ProyectoChura</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_mascotas">MascotasActivity</string>
+</resources>
