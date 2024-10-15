@@ -2,4 +2,7 @@
     <string name="app_name">ProyectoChura</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_mascotas">MascotasActivity</string>
+    <string name="title_activity_shop">ShopActivity</string>
+    <string name="title_activity_favorite">FavoriteActivity</string>
+    <string name="title_activity_user">UserActivity</string>
 </resources>
