@@ -1,4 +1,4 @@
-package com.sandur.proyectochura.navegation
+package com.sandur.proyectochura.utils.navegation
 
 import ScallfoldGeneral
 import androidx.compose.animation.AnimatedContentTransitionScope

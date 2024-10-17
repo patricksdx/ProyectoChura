@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.sandur.proyectochura.navegation.AppScreens
+import com.sandur.proyectochura.utils.navegation.AppScreens
 import compose.icons.LineAwesomeIcons
 import compose.icons.lineawesomeicons.HomeSolid
 import compose.icons.lineawesomeicons.PawSolid
@@ -34,7 +34,6 @@ fun ScallfoldGeneral(
     navController: NavHostController,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    // Obtenemos la ruta actual dentro de un bloque @Composable
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
@@ -54,7 +53,7 @@ fun ScallfoldGeneral(
                     Column(
                         modifier = Modifier
                             .weight(1F)
-                            .clickable { navigateIfNotCurrent(navController, AppScreens.MainScreen.route, currentRoute) },
+                            .clickable { navigateToScreen(navController, AppScreens.MainScreen.route, currentRoute) },
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Icon(
@@ -72,7 +71,7 @@ fun ScallfoldGeneral(
                     Column(
                         modifier = Modifier
                             .weight(1F)
-                            .clickable { navigateIfNotCurrent(navController, AppScreens.PetCategory.route, currentRoute) },
+                            .clickable { navigateToScreen(navController, AppScreens.PetCategory.route, currentRoute) },
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Icon(
@@ -149,9 +148,14 @@ fun ScallfoldGeneral(
     }
 }
 
-// Función no @Composable
-fun navigateIfNotCurrent(navController: NavHostController, route: String, currentRoute: String?) {
-    if (currentRoute != route) {
-        navController.navigate(route)
+fun navigateToScreen(navController: NavHostController, route: String, currentRoute: String?) {
+    if (currentRoute == route) {
+        navController.popBackStack()
+    } else {
+        navController.navigate(route) {
+            popUpTo(navController.graph.startDestinationId) { saveState = true }
+            launchSingleTop = true
+            restoreState = true
+        }
     }
 }

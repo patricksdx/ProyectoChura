@@ -62,7 +62,6 @@ private fun BodyContent(navController: NavHostController) {
     val isLoading = remember { mutableStateOf(true) }
     val errorMessage = remember { mutableStateOf<String?>(null) }
 
-    // Llamada a la API cuando se carga el Composable
     LaunchedEffect(Unit) {
         loadMascotas(context, mascotas, isLoading, errorMessage)
     }
@@ -100,7 +99,7 @@ private fun BodyContent(navController: NavHostController) {
 }
 
 private fun loadMascotas(
-    context: Context, // Se requiere el contexto para Volley
+    context: Context,
     mascotasState: MutableState<List<Mascota>>,
     isLoading: MutableState<Boolean>,
     errorMessage: MutableState<String?>
