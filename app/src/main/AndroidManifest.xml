@@ -16,26 +16,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".view.labelCard.user.UserActivity"
-            android:exported="false"
-            android:label="@string/title_activity_user"
-            android:theme="@style/Theme.ProyectoChura" />
-        <activity
-            android:name=".view.labelCard.favorite.FavoriteActivity"
-            android:exported="false"
-            android:label="@string/title_activity_favorite"
-            android:theme="@style/Theme.ProyectoChura" />
-        <activity
-            android:name=".view.labelCard.shop.ShopActivity"
-            android:exported="false"
-            android:label="@string/title_activity_shop"
-            android:theme="@style/Theme.ProyectoChura" />
-        <activity
-            android:name=".view.labelCard.pet.MascotasActivity"
-            android:exported="false"
-            android:label="@string/title_activity_mascotas"
-            android:theme="@style/Theme.ProyectoChura" />
-        <activity
             android:name=".view.SplashActivity"
             android:exported="true"
             android:label="Donapets"

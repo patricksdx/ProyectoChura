@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.volley)
     implementation(libs.androidx.tools.core)
     implementation(libs.view.model.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.accompanist)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
