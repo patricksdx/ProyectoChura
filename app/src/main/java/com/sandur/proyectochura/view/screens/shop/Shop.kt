@@ -1,4 +1,4 @@
-package com.sandur.proyectochura.view.screens.pet
+package com.sandur.proyectochura.view.screens.shop
 
 import android.content.Context
 import android.util.Log
@@ -29,18 +29,18 @@ import androidx.navigation.NavHostController
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.sandur.proyectochura.model.Mascota
+import com.sandur.proyectochura.model.Categorias
 import com.sandur.proyectochura.ui.theme.ProyectoChuraTheme
-import com.sandur.proyectochura.view.components.DrawMascota
+import com.sandur.proyectochura.view.components.DrawCategorias
 import org.json.JSONArray
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PetCategory(navController: NavHostController) {
+fun Shop(navController: NavHostController) {
     ProyectoChuraTheme {
         Scaffold(
             topBar = {
-                TopAppBar(title = { Text(text = "Adoptame") })
+                TopAppBar(title = { Text(text = "Tienda") })
             },
             bottomBar = { BottomAppBar {} }
         ) { paddingValues ->
@@ -58,12 +58,12 @@ fun PetCategory(navController: NavHostController) {
 @Composable
 private fun BodyContent(navController: NavHostController) {
     val context = LocalContext.current // Obtenemos el contexto
-    val mascotas = remember { mutableStateOf<List<Mascota>>(emptyList()) }
+    val categorias = remember { mutableStateOf<List<Categorias>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
     val errorMessage = remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
-        loadMascotas(context, mascotas, isLoading, errorMessage)
+        loadCategorias(context, categorias, isLoading, errorMessage)
     }
 
     Column(
@@ -75,7 +75,7 @@ private fun BodyContent(navController: NavHostController) {
     ) {
         when {
             isLoading.value -> {
-                Text(text = "Cargando Mascotas...")
+                Text(text = "Cargando Categorias...")
             }
             errorMessage.value != null -> {
                 Text(
@@ -85,12 +85,14 @@ private fun BodyContent(navController: NavHostController) {
             }
             else -> {
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(2), // 2 columnas para mostrar las mascotas
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 15.dp),
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 15.dp),
                     contentPadding = PaddingValues(4.dp)
                 ) {
-                    items(mascotas.value) { mascota ->
-                        DrawMascota(mascota)
+                    items(categorias.value) { categoria ->
+                        DrawCategorias(categoria, navController)
                     }
                 }
             }
@@ -98,21 +100,21 @@ private fun BodyContent(navController: NavHostController) {
     }
 }
 
-private fun loadMascotas(
+private fun loadCategorias(
     context: Context,
-    mascotasState: MutableState<List<Mascota>>,
+    categoriasState: MutableState<List<Categorias>>,
     isLoading: MutableState<Boolean>,
     errorMessage: MutableState<String?>
 ) {
     val queue = Volley.newRequestQueue(context) // Crear la cola de solicitudes
-    val url = "https://api-proyectochura-express.onrender.com/mascotas" // Asegúrate de que esta URL sea válida
+    val url = "https://api-proyectochura-express.onrender.com/categorias" // Asegúrate de que esta URL sea válida
 
     val stringRequest = StringRequest(
         Request.Method.GET, url,
         { response ->
             Log.d("Volley", response)
-            val mascotas = processMascotasResponse(response)
-            mascotasState.value = mascotas
+            val categorias = processCategoriasResponse(response)
+            categoriasState.value = categorias
             isLoading.value = false
         },
         { error ->
@@ -124,30 +126,26 @@ private fun loadMascotas(
     queue.add(stringRequest) // Añadir la solicitud a la cola
 }
 
-private fun processMascotasResponse(response: String): List<Mascota> {
+private fun processCategoriasResponse(response: String): List<Categorias> {
     val jsonArray = JSONArray(response)
-    val mascotas = mutableListOf<Mascota>()
+    val categoriasList = mutableListOf<Categorias>()
 
     for (i in 0 until jsonArray.length()) {
         val jsonObject = jsonArray.getJSONObject(i)
-        val idmascota = jsonObject.optString("idmascota", "")
-        val especiemascota = jsonObject.optString("especiemascota", "N/A")
-        val razamascota = jsonObject.optString("razamascota", "N/A")
-        val nombre = jsonObject.optString("nombre", "N/A")
-        val foto = jsonObject.optString("foto", "")
-        val sexo = jsonObject.optInt("sexo")
-        val ubicacion = jsonObject.optString("ubicacion", "")
+        val idcategoria = jsonObject.optInt("idcategoria", 0)
+        val nombrecategoria = jsonObject.optString("nombrecategoria", "N/A")
+        val imagencategoria = jsonObject.optString("imagencategoria", "N/A")
+        val descripcion = jsonObject.optString("descripcion", "N/A")
+        val total = jsonObject.optInt("total", 0)
 
-        val mascota = Mascota(
-            idmascota = idmascota,
-            especiemascota = especiemascota,
-            razamascota = razamascota,
-            nombre = nombre,
-            foto = foto,
-            sexo = sexo,
-            ubicacion = ubicacion
+        val categoria = Categorias(
+            idcategoria = idcategoria,
+            nombrecategoria = nombrecategoria,
+            imagencategoria = imagencategoria,
+            descripcion = descripcion,
+            total = total
         )
-        mascotas.add(mascota)
+        categoriasList.add(categoria)
     }
-    return mascotas
+    return categoriasList
 }

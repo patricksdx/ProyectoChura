@@ -57,7 +57,7 @@ fun MainScreen(navController: NavHostController) {
 @Composable
 private fun BodyContent(navController: NavHostController){
     Scaffold (
-        topBar = { TopAppBar(title = { Text(text = "") }) },
+        topBar = { TopAppBar(title = { Text(text = "Home") }) },
         bottomBar = { BottomAppBar {}}
     ) { paddingValues ->
         Column(

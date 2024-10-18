@@ -1,4 +1,5 @@
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -6,16 +7,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -24,11 +25,10 @@ import com.sandur.proyectochura.utils.navegation.AppScreens
 import compose.icons.LineAwesomeIcons
 import compose.icons.lineawesomeicons.HomeSolid
 import compose.icons.lineawesomeicons.PawSolid
-import compose.icons.lineawesomeicons.Star
+import compose.icons.lineawesomeicons.PlusSolid
 import compose.icons.lineawesomeicons.StoreSolid
 import compose.icons.lineawesomeicons.UserSolid
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScallfoldGeneral(
     navController: NavHostController,
@@ -38,107 +38,57 @@ fun ScallfoldGeneral(
     val currentRoute = currentBackStackEntry?.destination?.route
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "Adopt Me...") },
-            )
-        },
         bottomBar = {
             BottomAppBar {
                 Row(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(all = 10.dp),
+                        .padding(vertical = 10.dp, horizontal = 25.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .weight(1F)
-                            .clickable { navigateToScreen(navController, AppScreens.MainScreen.route, currentRoute) },
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    // Home
+                    BottomNavItem(
+                        icon = LineAwesomeIcons.HomeSolid,
+                        label = "Home",
+                        isSelected = currentRoute == AppScreens.MainScreen.route
                     ) {
-                        Icon(
-                            imageVector = LineAwesomeIcons.HomeSolid,
-                            modifier = Modifier.size(20.dp),
-                            contentDescription = "Home",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                        Text(
-                            text = "Home",
-                            fontSize = 10.sp,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        navigateToScreen(navController, AppScreens.MainScreen.route, currentRoute)
                     }
-                    Column(
-                        modifier = Modifier
-                            .weight(1F)
-                            .clickable { navigateToScreen(navController, AppScreens.PetCategory.route, currentRoute) },
-                        horizontalAlignment = Alignment.CenterHorizontally
+
+                    // Pets
+                    BottomNavItem(
+                        icon = LineAwesomeIcons.PawSolid,
+                        label = "Pets",
+                        isSelected = currentRoute == AppScreens.PetCategory.route
                     ) {
-                        Icon(
-                            imageVector = LineAwesomeIcons.PawSolid,
-                            modifier = Modifier.size(20.dp),
-                            contentDescription = "Mascotas",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                        Text(
-                            text = "Pets",
-                            fontSize = 10.sp,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        navigateToScreen(navController, AppScreens.PetCategory.route, currentRoute)
                     }
-                    Column(
-                        modifier = Modifier
-                            .weight(1F)
-                            .clickable { /* Acción para Shop */ },
-                        horizontalAlignment = Alignment.CenterHorizontally
+
+                    // Shop
+                    BottomNavItem(
+                        icon = LineAwesomeIcons.StoreSolid,
+                        label = "Shop",
+                        isSelected = currentRoute == AppScreens.Shop.route
                     ) {
-                        Icon(
-                            imageVector = LineAwesomeIcons.StoreSolid,
-                            modifier = Modifier.size(20.dp),
-                            contentDescription = "Shop",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                        Text(
-                            text = "Shop",
-                            fontSize = 10.sp,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        navigateToScreen(navController, AppScreens.Shop.route, currentRoute)
                     }
-                    Column(
-                        modifier = Modifier
-                            .weight(1F)
-                            .clickable { /* Acción para Favoritos */ },
-                        horizontalAlignment = Alignment.CenterHorizontally
+
+                    // Favorite
+                    BottomNavItem(
+                        icon = LineAwesomeIcons.PlusSolid,
+                        label = "Insert",
+                        isSelected = currentRoute == AppScreens.Insert.route
                     ) {
-                        Icon(
-                            imageVector = LineAwesomeIcons.Star,
-                            modifier = Modifier.size(20.dp),
-                            contentDescription = "Favorite",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                        Text(
-                            text = "Favorite",
-                            fontSize = 10.sp,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        navigateToScreen(navController, AppScreens.Insert.route, currentRoute)
                     }
-                    Column(
-                        modifier = Modifier
-                            .weight(1F)
-                            .clickable { /* Acción para Perfil */ },
-                        horizontalAlignment = Alignment.CenterHorizontally
+
+                    // Profile
+                    BottomNavItem(
+                        icon = LineAwesomeIcons.UserSolid,
+                        label = "Profile",
+                        isSelected = currentRoute == AppScreens.Profile.route
                     ) {
-                        Icon(
-                            imageVector = LineAwesomeIcons.UserSolid,
-                            modifier = Modifier.size(20.dp),
-                            contentDescription = "Profile",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                        Text(
-                            text = "Profile",
-                            fontSize = 10.sp,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        navigateToScreen(navController, AppScreens.Profile.route, currentRoute)
                     }
                 }
             }
@@ -148,10 +98,29 @@ fun ScallfoldGeneral(
     }
 }
 
+@Composable
+fun BottomNavItem(icon: ImageVector, label: String, isSelected: Boolean, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .clickable(onClick = onClick),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = icon,
+            modifier = if(isSelected) { Modifier.size(22.dp).graphicsLayer(scaleX = 1.2f, scaleY = 1.2f) } else { Modifier.size(20.dp) },
+            contentDescription = label,
+            tint = if (isSelected) { MaterialTheme.colorScheme.secondary  } else { MaterialTheme.colorScheme.primary }
+        )
+        Text(
+            text = label,
+            fontSize = if(isSelected) { 14.sp } else { 12.sp },
+            color = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
 fun navigateToScreen(navController: NavHostController, route: String, currentRoute: String?) {
-    if (currentRoute == route) {
-        navController.popBackStack()
-    } else {
+    if (currentRoute != route) {
         navController.navigate(route) {
             popUpTo(navController.graph.startDestinationId) { saveState = true }
             launchSingleTop = true
