@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -39,9 +39,16 @@ import org.json.JSONArray
 fun PetCategory(navController: NavHostController) {
     ProyectoChuraTheme {
         Scaffold(
-            topBar = {
-                TopAppBar(title = { Text(text = "Adoptame") })
-            },
+            topBar = { TopAppBar(
+                modifier = Modifier.height(80.dp),
+                title = {
+                    Text(
+                        text = "Adoptame",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(vertical = 12.dp)
+                    )
+                }
+            ) },
             bottomBar = { BottomAppBar {} }
         ) { paddingValues ->
             Column(
@@ -57,7 +64,7 @@ fun PetCategory(navController: NavHostController) {
 
 @Composable
 private fun BodyContent(navController: NavHostController) {
-    val context = LocalContext.current // Obtenemos el contexto
+    val context = LocalContext.current
     val mascotas = remember { mutableStateOf<List<Mascota>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
     val errorMessage = remember { mutableStateOf<String?>(null) }
@@ -85,9 +92,10 @@ private fun BodyContent(navController: NavHostController) {
             }
             else -> {
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(2), // 2 columnas para mostrar las mascotas
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 15.dp),
-                    contentPadding = PaddingValues(4.dp)
+                    columns = GridCells.Fixed(3),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 15.dp),
                 ) {
                     items(mascotas.value) { mascota ->
                         DrawMascota(mascota)
@@ -104,8 +112,8 @@ private fun loadMascotas(
     isLoading: MutableState<Boolean>,
     errorMessage: MutableState<String?>
 ) {
-    val queue = Volley.newRequestQueue(context) // Crear la cola de solicitudes
-    val url = "https://api-proyectochura-express.onrender.com/mascotas" // Asegúrate de que esta URL sea válida
+    val queue = Volley.newRequestQueue(context)
+    val url = "https://api-proyectochura-express.onrender.com/mascotas"
 
     val stringRequest = StringRequest(
         Request.Method.GET, url,
@@ -121,7 +129,7 @@ private fun loadMascotas(
             isLoading.value = false
         }
     )
-    queue.add(stringRequest) // Añadir la solicitud a la cola
+    queue.add(stringRequest)
 }
 
 private fun processMascotasResponse(response: String): List<Mascota> {

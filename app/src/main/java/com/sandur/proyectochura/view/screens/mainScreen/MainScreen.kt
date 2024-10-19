@@ -57,7 +57,16 @@ fun MainScreen(navController: NavHostController) {
 @Composable
 private fun BodyContent(navController: NavHostController){
     Scaffold (
-        topBar = { TopAppBar(title = { Text(text = "Home") }) },
+        topBar = { TopAppBar(
+            modifier = Modifier.height(80.dp),
+                title = {
+                    Text(
+                        text = "Home",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(vertical = 12.dp)
+                    )
+                }
+        ) },
         bottomBar = { BottomAppBar {}}
     ) { paddingValues ->
         Column(
@@ -83,7 +92,7 @@ fun PetLive(modifier: Modifier = Modifier) {
     )
 
     Column(
-        modifier = modifier.padding(horizontal = 20.dp)
+        modifier = modifier.padding(horizontal = 15.dp)
     ) {
         Box {
             LazyRow(
@@ -188,7 +197,7 @@ fun PetStories(modifier: Modifier = Modifier) {
 
     Column(
         modifier = modifier
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 15.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -248,7 +257,7 @@ fun PopularCategory(modifier: Modifier = Modifier) {
 
     Column (
         modifier = modifier
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 15.dp)
             .padding(top = 20.dp)
     ) {
         Text(

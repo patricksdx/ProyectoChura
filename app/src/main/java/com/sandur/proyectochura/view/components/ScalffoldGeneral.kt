@@ -25,7 +25,7 @@ import com.sandur.proyectochura.utils.navegation.AppScreens
 import compose.icons.LineAwesomeIcons
 import compose.icons.lineawesomeicons.HomeSolid
 import compose.icons.lineawesomeicons.PawSolid
-import compose.icons.lineawesomeicons.PlusSolid
+import compose.icons.lineawesomeicons.SearchSolid
 import compose.icons.lineawesomeicons.StoreSolid
 import compose.icons.lineawesomeicons.UserSolid
 
@@ -75,11 +75,11 @@ fun ScallfoldGeneral(
 
                     // Favorite
                     BottomNavItem(
-                        icon = LineAwesomeIcons.PlusSolid,
-                        label = "Insert",
-                        isSelected = currentRoute == AppScreens.Insert.route
+                        icon = LineAwesomeIcons.SearchSolid,
+                        label = "Search",
+                        isSelected = currentRoute == AppScreens.Buscar.route
                     ) {
-                        navigateToScreen(navController, AppScreens.Insert.route, currentRoute)
+                        navigateToScreen(navController, AppScreens.Buscar.route, currentRoute)
                     }
 
                     // Profile

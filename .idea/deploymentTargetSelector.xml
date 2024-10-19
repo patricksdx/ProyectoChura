@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-10-18T05:30:27.614385900Z">
+        <DropdownSelection timestamp="2024-10-19T04:02:15.113854Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\patri\.android\avd\Samsung_A55_API_34.avd" />

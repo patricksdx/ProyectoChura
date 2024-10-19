@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -40,7 +39,15 @@ fun Shop(navController: NavHostController) {
     ProyectoChuraTheme {
         Scaffold(
             topBar = {
-                TopAppBar(title = { Text(text = "Tienda") })
+                TopAppBar(
+                    title = {
+                        Text (
+                        text = "Tipos de productos",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(vertical = 12.dp)
+                        )
+                    }
+                )
             },
             bottomBar = { BottomAppBar {} }
         ) { paddingValues ->
@@ -57,7 +64,7 @@ fun Shop(navController: NavHostController) {
 
 @Composable
 private fun BodyContent(navController: NavHostController) {
-    val context = LocalContext.current // Obtenemos el contexto
+    val context = LocalContext.current
     val categorias = remember { mutableStateOf<List<Categorias>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
     val errorMessage = remember { mutableStateOf<String?>(null) }
@@ -89,7 +96,6 @@ private fun BodyContent(navController: NavHostController) {
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 15.dp),
-                    contentPadding = PaddingValues(4.dp)
                 ) {
                     items(categorias.value) { categoria ->
                         DrawCategorias(categoria, navController)
@@ -106,8 +112,8 @@ private fun loadCategorias(
     isLoading: MutableState<Boolean>,
     errorMessage: MutableState<String?>
 ) {
-    val queue = Volley.newRequestQueue(context) // Crear la cola de solicitudes
-    val url = "https://api-proyectochura-express.onrender.com/categorias" // Asegúrate de que esta URL sea válida
+    val queue = Volley.newRequestQueue(context)
+    val url = "https://api-proyectochura-express.onrender.com/categorias"
 
     val stringRequest = StringRequest(
         Request.Method.GET, url,
@@ -123,7 +129,7 @@ private fun loadCategorias(
             isLoading.value = false
         }
     )
-    queue.add(stringRequest) // Añadir la solicitud a la cola
+    queue.add(stringRequest)
 }
 
 private fun processCategoriasResponse(response: String): List<Categorias> {

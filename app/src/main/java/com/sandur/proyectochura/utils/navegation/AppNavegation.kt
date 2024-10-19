@@ -6,10 +6,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.sandur.proyectochura.view.screens.insert.Insert
+import com.sandur.proyectochura.view.screens.insert.Buscar
 import com.sandur.proyectochura.view.screens.mainScreen.MainScreen
 import com.sandur.proyectochura.view.screens.pet.PetCategory
 import com.sandur.proyectochura.view.screens.profile.Profile
@@ -22,7 +22,7 @@ fun AppNavegation() {
     val navController = rememberNavController()
 
     ScallfoldGeneral(navController = navController) {
-        AnimatedNavHost(
+        NavHost(
             navController = navController,
             startDestination = AppScreens.MainScreen.route,
             enterTransition = {
@@ -47,8 +47,8 @@ fun AppNavegation() {
             composable(AppScreens.Shop.route) {
                 Shop(navController)
             }
-            composable(AppScreens.Insert.route) {
-                Insert(navController)
+            composable(AppScreens.Buscar.route) {
+                Buscar(navController)
             }
             composable(AppScreens.Profile.route) {
                 Profile(navController)
