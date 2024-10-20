@@ -98,7 +98,7 @@ private fun BodyContent(navController: NavHostController) {
                         .padding(horizontal = 15.dp),
                 ) {
                     items(mascotas.value) { mascota ->
-                        DrawMascota(mascota)
+                        DrawMascota(mascota, context)
                     }
                 }
             }

@@ -64,7 +64,7 @@ fun DrawCategorias(item: Categorias, navController: NavController) {
                 Box(
                     modifier = Modifier
                         .matchParentSize()
-                        .background(Color.Black.copy(alpha = 0.8f))
+                        .background(Color.Black.copy(alpha = 0.4f))
                 )
             }
 

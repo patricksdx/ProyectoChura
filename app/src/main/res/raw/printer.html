@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV de la Mascota</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 480px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .photo {
+            width: 40%;
+            text-align: center;
+        }
+
+        .photo img {
+            max-width: 200px;
+            border-radius: 50%;
+        }
+
+        .details {
+            margin-top: 20px;
+        }
+
+        .details_padre {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 10px;
+        }
+        .detail {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Informacion de la mascota a adoptar</h1>
+    <div class="container">
+        <div class="details_padre">
+            <div class="detail"><strong>Nombre:</strong> {{nombre}}</div>
+            <div class="detail"><strong>Especie:</strong> {{especiemascota}}</div>
+            <div class="detail"><strong>Raza:</strong> {{razamascota}}</div>
+            <div class="detail"><strong>Ubicación:</strong> {{ubicacion}}</div>
+            <div class="detail"><strong>Sexo:</strong> {{sexo}}</div>
+        </div>
+        <div class="photo">
+            <img src="{{foto}}" alt="Foto de la mascota">
+        </div>
+    </div>
+
+</body>
+
+</html>

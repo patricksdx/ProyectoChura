@@ -1,5 +1,7 @@
 package com.sandur.proyectochura.view.components
 
+import android.content.Context
+import android.webkit.WebView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,16 +33,19 @@ import com.sandur.proyectochura.model.Mascota
 import compose.icons.LineAwesomeIcons
 import compose.icons.lineawesomeicons.MarsSolid
 import compose.icons.lineawesomeicons.VenusSolid
+import loadHtmlAndExportAsPdf
 
 @Composable
-fun DrawMascota(item: Mascota) {
+fun DrawMascota(item: Mascota, context: Context) {
     Box(
         modifier = Modifier
             .height(270.dp)
             .padding(vertical = 10.dp, horizontal = 5.dp)
             .background(MaterialTheme.colorScheme.onPrimary, RoundedCornerShape(10.dp))
             .clickable {
-                // Lógica para manejar el clic
+                // Lógica para manejar el clic y exportar a PDF
+                val webView = WebView(context) // Crear una WebView
+                loadHtmlAndExportAsPdf(webView, context, item.nombre, item.especiemascota, item.razamascota, item.ubicacion, item.sexo.toString(), item.foto)
             }
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
@@ -93,7 +98,7 @@ fun DrawMascota(item: Mascota) {
                 Icon(
                     imageVector = if (item.sexo == 1) LineAwesomeIcons.MarsSolid else LineAwesomeIcons.VenusSolid,
                     modifier = Modifier.size(18.dp),
-                    contentDescription = "Sex",
+                    contentDescription = "Sexo",
                     tint = if (item.sexo == 1) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                 )
                 Spacer(modifier = Modifier.width(5.dp))
@@ -132,7 +137,6 @@ fun DrawMascota(item: Mascota) {
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
-
         }
     }
 }
