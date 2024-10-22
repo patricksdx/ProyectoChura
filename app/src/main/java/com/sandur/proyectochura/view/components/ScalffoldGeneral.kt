@@ -23,9 +23,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.sandur.proyectochura.utils.navegation.AppScreens
 import compose.icons.LineAwesomeIcons
+import compose.icons.lineawesomeicons.GlobeSolid
 import compose.icons.lineawesomeicons.HomeSolid
 import compose.icons.lineawesomeicons.PawSolid
-import compose.icons.lineawesomeicons.SearchSolid
 import compose.icons.lineawesomeicons.StoreSolid
 import compose.icons.lineawesomeicons.UserSolid
 
@@ -75,11 +75,11 @@ fun ScallfoldGeneral(
 
                     // Favorite
                     BottomNavItem(
-                        icon = LineAwesomeIcons.SearchSolid,
-                        label = "Search",
-                        isSelected = currentRoute == AppScreens.Buscar.route
+                        icon = LineAwesomeIcons.GlobeSolid,
+                        label = "Paises",
+                        isSelected = currentRoute == AppScreens.Paises.route
                     ) {
-                        navigateToScreen(navController, AppScreens.Buscar.route, currentRoute)
+                        navigateToScreen(navController, AppScreens.Paises.route, currentRoute)
                     }
 
                     // Profile

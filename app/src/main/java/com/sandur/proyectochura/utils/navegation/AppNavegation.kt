@@ -9,8 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.sandur.proyectochura.view.screens.insert.Buscar
+import com.sandur.proyectochura.view.screens.paises.Buscar
 import com.sandur.proyectochura.view.screens.mainScreen.MainScreen
+import com.sandur.proyectochura.view.screens.paises.AgregarPais
 import com.sandur.proyectochura.view.screens.pet.PetCategory
 import com.sandur.proyectochura.view.screens.profile.Profile
 import com.sandur.proyectochura.view.screens.shop.Products
@@ -47,7 +48,7 @@ fun AppNavegation() {
             composable(AppScreens.Shop.route) {
                 Shop(navController)
             }
-            composable(AppScreens.Buscar.route) {
+            composable(AppScreens.Paises.route) {
                 Buscar(navController)
             }
             composable(AppScreens.Profile.route) {
@@ -62,7 +63,9 @@ fun AppNavegation() {
                     backStackEntry.arguments?.getString("nombrecategoria")
                 )
             }
-
+            composable(AppScreens.AgregarPais.route) {
+                AgregarPais(navController)
+            }
         }
     }
 }
