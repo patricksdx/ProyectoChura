@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.sandur.proyectochura.dao.UserDao
+import com.sandur.proyectochura.model.User
 import com.sandur.proyectochura.ui.theme.ProyectoChuraTheme
 import com.sandur.proyectochura.utils.database.DataBaseProvider
 import kotlinx.coroutines.Dispatchers
@@ -30,13 +31,14 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Profile(navController: NavHostController) {
+fun AgregarUser(navController: NavHostController) {
     val context = LocalContext.current
     val userDao: UserDao = DataBaseProvider.getDatabase(context).userDao()
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var isLoggingIn by remember { mutableStateOf(false) }
+    var name by remember { mutableStateOf("") }
+    var isCreatingUser by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
     ProyectoChuraTheme {
@@ -45,7 +47,7 @@ fun Profile(navController: NavHostController) {
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Perfil",
+                            text = "Agregar Usuario",
                             style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.padding(vertical = 12.dp)
                         )
@@ -65,23 +67,21 @@ fun Profile(navController: NavHostController) {
                     onEmailChange = { email = it },
                     password = password,
                     onPasswordChange = { password = it },
-                    isLoggingIn = isLoggingIn,
-                    onLoginClick = {
-                        isLoggingIn = true
+                    name = name,
+                    onNameChange = { name = it },
+                    isCreatingUser = isCreatingUser,
+                    onCreateUserClick = {
+                        isCreatingUser = true
                         scope.launch {
                             val user = withContext(Dispatchers.IO) {
-                                userDao.getUserByEmailAndPassword(email, password)
+                                val newUser = User(name = name, email = email, password = password)
+                                userDao.insertUser(newUser)
                             }
-                            if (user != null) {
-                                Toast.makeText(context, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                                navController.navigate("UserScreen") // Cambia "home" según tu navegación.
-                            } else {
-                                Toast.makeText(context, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
-                            }
-                            isLoggingIn = false
+                            Toast.makeText(context, "Usuario creado exitosamente", Toast.LENGTH_SHORT).show()
+                            navController.navigate("porfile") // Redirigir a otra pantalla si es necesario
+                            isCreatingUser = false
                         }
-                    },
-                    navController = navController // Se pasa el navController a BodyContent
+                    }
                 )
             }
         }
@@ -94,14 +94,26 @@ private fun BodyContent(
     onEmailChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
-    isLoggingIn: Boolean,
-    onLoginClick: () -> Unit,
-    navController: NavHostController // Añadido el controlador de navegación aquí
+    name: String,
+    onNameChange: (String) -> Unit,
+    isCreatingUser: Boolean,
+    onCreateUserClick: () -> Unit
 ) {
     Text(
-        text = "Inicio de Sesión",
+        text = "Crear Nuevo Usuario",
         style = MaterialTheme.typography.titleLarge,
         modifier = Modifier.padding(bottom = 16.dp)
+    )
+
+    OutlinedTextField(
+        value = name,
+        onValueChange = onNameChange,
+        label = { Text("Nombre") },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next
+        ),
+        modifier = Modifier.padding(8.dp)
     )
 
     OutlinedTextField(
@@ -127,18 +139,10 @@ private fun BodyContent(
     )
 
     Button(
-        onClick = onLoginClick,
-        enabled = !isLoggingIn,
+        onClick = onCreateUserClick,
+        enabled = !isCreatingUser,
         modifier = Modifier.padding(16.dp)
     ) {
-        Text(text = if (isLoggingIn) "Iniciando..." else "Iniciar Sesión")
-    }
-
-    // Botón para redirigir a la pantalla de agregar usuario
-    Button(
-        onClick = { navController.navigate("agregaruser") }, // Cambia "agregaruser" por la ruta correcta
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Text(text = "Agregar Usuario")
+        Text(text = if (isCreatingUser) "Creando..." else "Crear Usuario")
     }
 }

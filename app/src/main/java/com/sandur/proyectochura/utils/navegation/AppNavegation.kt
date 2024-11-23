@@ -16,6 +16,7 @@ import com.sandur.proyectochura.view.screens.pet.PetCategory
 import com.sandur.proyectochura.view.screens.profile.Profile
 import com.sandur.proyectochura.view.screens.shop.Products
 import com.sandur.proyectochura.view.screens.shop.Shop
+import com.sandur.proyectochura.view.screens.profile.AgregarUser
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -65,6 +66,9 @@ fun AppNavegation() {
             }
             composable(AppScreens.AgregarPais.route) {
                 AgregarPais(navController)
+            }
+            composable(AppScreens.AgregarUser.route) {
+                AgregarUser(navController)
             }
         }
     }

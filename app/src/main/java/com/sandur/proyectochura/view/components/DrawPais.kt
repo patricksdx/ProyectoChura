@@ -16,10 +16,10 @@ fun DrawPais(pais: Pais) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(text = pais.codpais, style = MaterialTheme.typography.labelSmall)
         Text(text = pais.pais, style = MaterialTheme.typography.titleLarge)
+        Text(text = pais.capital, style = MaterialTheme.typography.labelSmall)
 
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
 
-        Text(text = pais.capital, style = MaterialTheme.typography.bodySmall)
         Text(text = "Área: ${pais.area} km²", style = MaterialTheme.typography.bodySmall)
         Text(text = "Población: ${pais.poblacion}", style = MaterialTheme.typography.bodySmall)
         Text(text = "Continente: ${pais.continente}", style = MaterialTheme.typography.bodySmall)

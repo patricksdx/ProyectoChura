@@ -12,4 +12,5 @@ sealed class AppScreens(val route: String) {
             "products/$idcategoria/$nombrecategoria"
     }
     object AgregarPais: AppScreens("AgregarPais")
+    object AgregarUser: AppScreens("AgregarUser")
 }
