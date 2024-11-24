@@ -64,6 +64,9 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version") // Correcto para Room
     implementation("androidx.room:room-ktx:$room_version")
 
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+
     // Librerías principales de Android y Jetpack Compose
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

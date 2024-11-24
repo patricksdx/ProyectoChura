@@ -6,17 +6,21 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.sandur.proyectochura.view.screens.paises.Buscar
+import androidx.navigation.navArgument
 import com.sandur.proyectochura.view.screens.mainScreen.MainScreen
 import com.sandur.proyectochura.view.screens.paises.AgregarPais
+import com.sandur.proyectochura.view.screens.paises.Buscar
 import com.sandur.proyectochura.view.screens.pet.PetCategory
-import com.sandur.proyectochura.view.screens.profile.Profile
 import com.sandur.proyectochura.view.screens.shop.Products
 import com.sandur.proyectochura.view.screens.shop.Shop
-import com.sandur.proyectochura.view.screens.profile.AgregarUser
+import com.sandur.proyectochura.view.screens.user.AgregarUser
+import com.sandur.proyectochura.view.screens.user.Login
+import com.sandur.proyectochura.view.screens.user.ModifyUser
+import com.sandur.proyectochura.view.screens.user.User
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -52,11 +56,10 @@ fun AppNavegation() {
             composable(AppScreens.Paises.route) {
                 Buscar(navController)
             }
-            composable(AppScreens.Profile.route) {
-                Profile(navController)
+            composable(AppScreens.Login.route) {
+                Login(navController)
             }
 
-            // NO PRINCIPALES
             composable(AppScreens.Products.route) { backStackEntry ->
                 Products(
                     navController,
@@ -69,6 +72,18 @@ fun AppNavegation() {
             }
             composable(AppScreens.AgregarUser.route) {
                 AgregarUser(navController)
+            }
+            composable(AppScreens.User.route) {
+                User(navController)
+            }
+
+            // Nueva pantalla para modificar usuario
+            composable(
+                route = AppScreens.ModifyUser.route,
+                arguments = listOf(navArgument("userId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val userId = backStackEntry.arguments?.getInt("userId") ?: 0
+                ModifyUser(navController, userId)
             }
         }
     }

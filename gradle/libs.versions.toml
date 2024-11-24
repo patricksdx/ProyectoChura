@@ -17,9 +17,6 @@ toolsCore = "1.0.0-alpha10"
 modelCompose = "2.8.7"
 navigationCompose = "2.8.4"
 accompanist = "0.36.0"
-roomCommon = "2.6.1"
-roomKtx = "2.6.1"
-roomCompiler = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,8 +42,6 @@ volley = { module = "com.android.volley:volley", version.ref = "volley" }
 view-model-compose = {module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "modelCompose"}
 navigation-compose = {module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose"}
 accompanist = {module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist"}
-androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
-androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 
 
 [plugins]

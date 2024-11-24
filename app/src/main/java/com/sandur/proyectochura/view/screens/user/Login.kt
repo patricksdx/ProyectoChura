@@ -1,19 +1,29 @@
-package com.sandur.proyectochura.view.screens.profile
+package com.sandur.proyectochura.view.screens.user
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,20 +34,39 @@ import androidx.navigation.NavHostController
 import com.sandur.proyectochura.dao.UserDao
 import com.sandur.proyectochura.ui.theme.ProyectoChuraTheme
 import com.sandur.proyectochura.utils.database.DataBaseProvider
-import kotlinx.coroutines.Dispatchers
+import com.sandur.proyectochura.utils.userstore.UserStore
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Profile(navController: NavHostController) {
+fun Login(navController: NavHostController) {
     val context = LocalContext.current
     val userDao: UserDao = DataBaseProvider.getDatabase(context).userDao()
+    val userStore = UserStore(context)
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isLoggingIn by remember { mutableStateOf(false) }
+    var rememberMe by remember { mutableStateOf(false) } // Estado para el checkbox
     val scope = rememberCoroutineScope()
+
+    // Verificar si el usuario seleccionó mantener sesión iniciada
+    LaunchedEffect(Unit) {
+        scope.launch {
+            userStore.isSessionPersistent.collect { isPersistent ->
+                if (isPersistent) {
+                    // Si el usuario desea mantener la sesión, navegar automáticamente
+                    userStore.currentUserId.collect { userId ->
+                        if (userId != null) {
+                            navController.navigate("User") {
+                                popUpTo("Login") { inclusive = true }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     ProyectoChuraTheme {
         Scaffold(
@@ -69,19 +98,33 @@ fun Profile(navController: NavHostController) {
                     onLoginClick = {
                         isLoggingIn = true
                         scope.launch {
-                            val user = withContext(Dispatchers.IO) {
-                                userDao.getUserByEmailAndPassword(email, password)
-                            }
+                            val user = userDao.getUserByEmailAndPassword(email, password)
                             if (user != null) {
-                                Toast.makeText(context, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                                navController.navigate("UserScreen") // Cambia "home" según tu navegación.
+                                // Guardar siempre el ID del usuario que inició sesión
+                                userStore.saveCurrentUser(user.id)
+
+                                // Si el checkbox está marcado, guardar la persistencia de sesión
+                                userStore.setSessionPersistence(rememberMe)
+
+                                Toast.makeText(
+                                    context,
+                                    "Inicio de sesión exitoso",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                navController.navigate("User")
                             } else {
-                                Toast.makeText(context, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    "Credenciales incorrectas",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                             isLoggingIn = false
                         }
                     },
-                    navController = navController // Se pasa el navController a BodyContent
+                    navController = navController,
+                    rememberMe = rememberMe,
+                    onRememberMeChange = { rememberMe = it }
                 )
             }
         }
@@ -96,7 +139,9 @@ private fun BodyContent(
     onPasswordChange: (String) -> Unit,
     isLoggingIn: Boolean,
     onLoginClick: () -> Unit,
-    navController: NavHostController // Añadido el controlador de navegación aquí
+    navController: NavHostController,
+    rememberMe: Boolean,
+    onRememberMeChange: (Boolean) -> Unit
 ) {
     Text(
         text = "Inicio de Sesión",
@@ -126,19 +171,20 @@ private fun BodyContent(
         modifier = Modifier.padding(8.dp)
     )
 
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Checkbox(
+            checked = rememberMe,
+            onCheckedChange = onRememberMeChange
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = "Recordar inicio de sesion")
+    }
+
     Button(
         onClick = onLoginClick,
         enabled = !isLoggingIn,
         modifier = Modifier.padding(16.dp)
     ) {
         Text(text = if (isLoggingIn) "Iniciando..." else "Iniciar Sesión")
-    }
-
-    // Botón para redirigir a la pantalla de agregar usuario
-    Button(
-        onClick = { navController.navigate("agregaruser") }, // Cambia "agregaruser" por la ruta correcta
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Text(text = "Agregar Usuario")
     }
 }

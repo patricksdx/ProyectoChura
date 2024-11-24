@@ -1,19 +1,27 @@
-package com.sandur.proyectochura.view.screens.profile
+package com.sandur.proyectochura.view.screens.user
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,6 +33,8 @@ import com.sandur.proyectochura.dao.UserDao
 import com.sandur.proyectochura.model.User
 import com.sandur.proyectochura.ui.theme.ProyectoChuraTheme
 import com.sandur.proyectochura.utils.database.DataBaseProvider
+import compose.icons.LineAwesomeIcons
+import compose.icons.lineawesomeicons.ArrowLeftSolid
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -38,6 +48,7 @@ fun AgregarUser(navController: NavHostController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") } // Variable para apellido
     var isCreatingUser by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
@@ -47,10 +58,19 @@ fun AgregarUser(navController: NavHostController) {
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Agregar Usuario",
+                            text = "",
                             style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.padding(vertical = 12.dp)
                         )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = { navController.navigateUp() }) {
+                            Icon(
+                                imageVector = LineAwesomeIcons.ArrowLeftSolid,
+                                modifier = Modifier.size(24.dp),
+                                contentDescription = "Left"
+                            )
+                        }
                     }
                 )
             }
@@ -69,16 +89,38 @@ fun AgregarUser(navController: NavHostController) {
                     onPasswordChange = { password = it },
                     name = name,
                     onNameChange = { name = it },
+                    lastName = lastName,
+                    onLastNameChange = { lastName = it }, // Cambio para apellido
                     isCreatingUser = isCreatingUser,
                     onCreateUserClick = {
+                        // Validación: Todos los campos deben estar completos
+                        if (name.isBlank() || lastName.isBlank() || email.isBlank() || password.isBlank()) {
+                            Toast.makeText(
+                                context,
+                                "Todos los campos son obligatorios",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@BodyContent
+                        }
+
                         isCreatingUser = true
                         scope.launch {
-                            val user = withContext(Dispatchers.IO) {
-                                val newUser = User(name = name, email = email, password = password)
+                            // Crear un nuevo usuario en la base de datos
+                            val newUser = User(
+                                name = name,
+                                lastName = lastName,
+                                email = email,
+                                password = password
+                            )
+                            withContext(Dispatchers.IO) {
                                 userDao.insertUser(newUser)
                             }
                             Toast.makeText(context, "Usuario creado exitosamente", Toast.LENGTH_SHORT).show()
-                            navController.navigate("porfile") // Redirigir a otra pantalla si es necesario
+
+                            // Redirigir a la pantalla de usuarios
+                            navController.navigate("User") // Asegúrate de que esta ruta sea correcta
+
+                            // Restablecer el estado de la creación
                             isCreatingUser = false
                         }
                     }
@@ -96,6 +138,8 @@ private fun BodyContent(
     onPasswordChange: (String) -> Unit,
     name: String,
     onNameChange: (String) -> Unit,
+    lastName: String,
+    onLastNameChange: (String) -> Unit, // Añadir parámetro para apellido
     isCreatingUser: Boolean,
     onCreateUserClick: () -> Unit
 ) {
@@ -109,6 +153,17 @@ private fun BodyContent(
         value = name,
         onValueChange = onNameChange,
         label = { Text("Nombre") },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next
+        ),
+        modifier = Modifier.padding(8.dp)
+    )
+
+    OutlinedTextField(
+        value = lastName,
+        onValueChange = onLastNameChange, // Actualizar el apellido
+        label = { Text("Apellido") },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Next

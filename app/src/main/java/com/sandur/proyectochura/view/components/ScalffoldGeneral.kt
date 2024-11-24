@@ -85,10 +85,10 @@ fun ScallfoldGeneral(
                     // Profile
                     BottomNavItem(
                         icon = LineAwesomeIcons.UserSolid,
-                        label = "Profile",
-                        isSelected = currentRoute == AppScreens.Profile.route
+                        label = "User",
+                        isSelected = currentRoute == AppScreens.Login.route
                     ) {
-                        navigateToScreen(navController, AppScreens.Profile.route, currentRoute)
+                        navigateToScreen(navController, AppScreens.Login.route, currentRoute)
                     }
                 }
             }
@@ -107,7 +107,13 @@ fun BottomNavItem(icon: ImageVector, label: String, isSelected: Boolean, onClick
     ) {
         Icon(
             imageVector = icon,
-            modifier = if(isSelected) { Modifier.size(22.dp).graphicsLayer(scaleX = 1.2f, scaleY = 1.2f) } else { Modifier.size(20.dp) },
+            modifier = if (isSelected) {
+                Modifier
+                    .size(22.dp)
+                    .graphicsLayer(scaleX = 1.2f, scaleY = 1.2f)
+            } else {
+                Modifier.size(20.dp)
+            },
             contentDescription = label,
             tint = if (isSelected) { MaterialTheme.colorScheme.secondary  } else { MaterialTheme.colorScheme.primary }
         )
